@@ -1,8 +1,8 @@
 // Data Storage (simulating a database)
 const data = {
     users: [
-        { username: "admin", password: "1" },
-        { username: "user1", password: "2" }
+        { username: "1", password: "1" },
+        { username: "2", password: "2" }
     ],
     websites: [
         { name: "Google", url: "https://www.google.com" },
@@ -15,16 +15,48 @@ const data = {
         js: "// Enter your JavaScript code here\nfunction hello() {\n  alert('Hello World!');\n}"
     },
     apps: [
-        { name: "Weather App", logo: "☀️" },
-        { name: "Calculator", logo: "🧮" },
-        { name: "Notes App", logo: "📝" }
+        { 
+            name: "Weather App", 
+            logo: "weather-app.png", 
+            apk: "weather-app.apk"
+        },
+        { 
+            name: "Calculator", 
+            logo: "calculator-app.png", 
+            apk: "calculator.apk"
+        },
+        { 
+            name: "Notes App", 
+            logo: "notes-app.png", 
+            apk: "notes-app.apk"
+        }
     ],
     files: [
-        { name: "HTML Template", type: "html" },
-        { name: "CSS Stylesheet", type: "css" },
-        { name: "JavaScript File", type: "js" },
-        { name: "Theme Pack", type: "zip" },
-        { name: "Documentation", type: "pdf" }
+        { 
+            name: "HTML Template", 
+            type: "html",
+            file: "template.html.zip" 
+        },
+        { 
+            name: "CSS Stylesheet", 
+            type: "css",
+            file: "styles.css.zip"
+        },
+        { 
+            name: "JavaScript File", 
+            type: "js",
+            file: "script.js.zip"
+        },
+        { 
+            name: "Theme Pack", 
+            type: "zip",
+            file: "theme-pack.zip"
+        },
+        { 
+            name: "Documentation", 
+            type: "pdf",
+            file: "documentation.pdf"
+        }
     ]
 };
 
@@ -35,6 +67,9 @@ const loginForm = document.getElementById('login-form');
 const logoutBtn = document.getElementById('logout-btn');
 const contentArea = document.getElementById('content-area');
 const featureBtns = document.querySelectorAll('.feature-btn');
+
+// Initialize
+dashboard.style.display = 'none';
 
 // Login Functionality
 loginForm.addEventListener('submit', function(e) {
@@ -60,7 +95,7 @@ loginForm.addEventListener('submit', function(e) {
 logoutBtn.addEventListener('click', function() {
     dashboard.style.display = 'none';
     loginContainer.style.display = 'flex';
-    loginForm.reset();
+    document.getElementById('login-form').reset();
 });
 
 // Feature Buttons Functionality
@@ -211,13 +246,15 @@ function showCodeEditor() {
     `;
 }
 
-// Apps Feature
+// Apps Feature - Updated with PNG logos and APK downloads
 function showApps() {
     let appsHTML = data.apps.map(app => `
         <div class="app-card">
-            <div class="app-logo">${app.logo}</div>
+            <div class="app-logo">
+                <img src="${app.logo}" alt="${app.name}" onerror="this.onerror=null;this.src='default-app-icon.png'">
+            </div>
             <div class="app-name">${app.name}</div>
-            <button class="download-apk">Download APK</button>
+            <button class="download-apk" data-apk="${app.apk}">Download APK</button>
         </div>
     `).join('');
     
@@ -231,13 +268,13 @@ function showApps() {
     `;
 }
 
-// Files Feature
+// Files Feature - Updated with specific file downloads
 function showFiles() {
     let filesHTML = data.files.map(file => `
         <div class="file-card">
             <div class="file-icon">${getFileIcon(file.type)}</div>
             <div class="file-name">${file.name}</div>
-            <button class="download-file">Download</button>
+            <button class="download-file" data-file="${file.file}">Download</button>
         </div>
     `).join('');
     
@@ -320,10 +357,36 @@ function updateCode() {
     data.codeSnippets.js = document.getElementById('js-code').value;
 }
 
-function downloadApk() {
-    alert('APK download started (simulated)');
+// Updated APK download function
+function downloadApk(e) {
+    const apkFile = e.target.getAttribute('data-apk');
+    const blob = new Blob([`Simulated content for ${apkFile}`], { type: 'application/vnd.android.package-archive' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = apkFile;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert(`Downloading ${apkFile}`);
 }
 
-function downloadFile() {
-    alert('File download started (simulated)');
+// Updated File download function
+function downloadFile(e) {
+    const fileName = e.target.getAttribute('data-file');
+    const fileType = fileName.endsWith('.zip') ? 'application/zip' : 
+                    fileName.endsWith('.pdf') ? 'application/pdf' : 
+                    'application/octet-stream';
+    
+    const blob = new Blob([`Simulated content for ${fileName}`], { type: fileType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert(`Downloading ${fileName}`);
 }
