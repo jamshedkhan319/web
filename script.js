@@ -1,9 +1,6 @@
-// Data Storage (simulating a database)
+// Data Storage
 const data = {
-    users: [
-        { username: "12", password: "12" },
-        { username: "12", password: "12" }
-    ],
+    passwords: ["123456", "23456"], // Allowed passwords
     websites: [
         { name: "Google", url: "https://www.google.com" },
         { name: "Facebook", url: "https://www.facebook.com" },
@@ -71,23 +68,20 @@ const featureBtns = document.querySelectorAll('.feature-btn');
 // Initialize
 dashboard.style.display = 'none';
 
-// Login Functionality
+// Login Functionality (password only)
 loginForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     
-    // Check credentials
-    const user = data.users.find(u => u.username === username && u.password === password);
-    
-    if (user) {
+    // Check password
+    if (data.passwords.includes(password)) {
         // Successful login
         loginContainer.style.display = 'none';
         dashboard.style.display = 'flex';
         showWelcomeMessage();
     } else {
-        alert('Invalid username or password');
+        alert('Invalid password');
     }
 });
 
@@ -95,7 +89,7 @@ loginForm.addEventListener('submit', function(e) {
 logoutBtn.addEventListener('click', function() {
     dashboard.style.display = 'none';
     loginContainer.style.display = 'flex';
-    document.getElementById('login-form').reset();
+    loginForm.reset();
 });
 
 // Feature Buttons Functionality
@@ -246,7 +240,7 @@ function showCodeEditor() {
     `;
 }
 
-// Apps Feature - Updated with PNG logos and APK downloads
+// Apps Feature
 function showApps() {
     let appsHTML = data.apps.map(app => `
         <div class="app-card">
@@ -268,7 +262,7 @@ function showApps() {
     `;
 }
 
-// Files Feature - Updated with specific file downloads
+// Files Feature
 function showFiles() {
     let filesHTML = data.files.map(file => `
         <div class="file-card">
@@ -357,7 +351,6 @@ function updateCode() {
     data.codeSnippets.js = document.getElementById('js-code').value;
 }
 
-// Updated APK download function
 function downloadApk(e) {
     const apkFile = e.target.getAttribute('data-apk');
     const blob = new Blob([`Simulated content for ${apkFile}`], { type: 'application/vnd.android.package-archive' });
@@ -372,7 +365,6 @@ function downloadApk(e) {
     alert(`Downloading ${apkFile}`);
 }
 
-// Updated File download function
 function downloadFile(e) {
     const fileName = e.target.getAttribute('data-file');
     const fileType = fileName.endsWith('.zip') ? 'application/zip' : 
