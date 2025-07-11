@@ -1,8 +1,8 @@
 // Data Storage (simulating a database)
 const data = {
     users: [
-        { username: "1", password: "1" },
-        { username: "2", password: "2" }
+        { username: "12", password: "12" },
+        { username: "12", password: "12" }
     ],
     websites: [
         { name: "Google", url: "https://www.google.com" },
