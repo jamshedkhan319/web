@@ -1,6 +1,6 @@
 // Data Storage
 const data = {
-    passwords: ["jk", "23456"], // Allowed passwords
+    passwords: ["jk", "jk"], // Allowed passwords
     websites: [
         { name: "bigcashweb repar", url: "https://bigcashweb.com/refer/bzbpalyk"},
         { name: "Facebook", url: "https://www.facebook.com" },
